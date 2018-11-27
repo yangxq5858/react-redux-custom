@@ -3,8 +3,6 @@
 /**
  * store中有2个对象:
  *    1. state（全局只有一个state，但它可以保存为一个对象树，什么数据都可以保存）
- *       一个state对应一个view（外部传入的），故state的结构是要变化的。
- *
  *    2. reducer处理器（外部传入）
  *
  * @param reducer 处理器（具体业务的，必须传入）
@@ -42,6 +40,7 @@ const createStore = (reducer)=>{
         state = reducer(state,action); //这里将新的state赋值给内部的state
 
         //当状态更新后，监听数组中（即订阅者，执行各自的订阅方法）
+        console.log(listeners);
         listeners.forEach((listener)=>listener());
     }
 
