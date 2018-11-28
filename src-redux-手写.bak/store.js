@@ -1,4 +1,4 @@
-import {createStore} from "redux";
+import {createStore} from "./redux";
 import counter from './reducers/counter-reducer';
 import todo from './reducers/todo-reducer';
 
@@ -29,5 +29,5 @@ let reducer = combineReducers(
 
 //创建一个全局的Store，传入参数为：合并后的reducer
 let store = createStore(reducer);
-console.log('初始化',store.getState());
+console.log(store.getState());
 export {store};
