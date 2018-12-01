@@ -53,4 +53,49 @@ const createStore = (reducer)=>{
     }
 }
 
-export {createStore}
+
+/**
+ *
+ * logger 的定义， 第一个参数为老的store，第二个参数为store.dispatch
+ * let logger = store => next => action =>{
+ * }
+ *
+ *applyMiddleware的应用
+ * let store = applyMiddleware(logger)(store.createStore)(reducer);
+ * @param middleWare
+ * @returns {function(*): function(*=): {dispatch: *}}
+ */
+//应用中间件 对store 增强，返回一个对 dispath 增强的 store
+/*let applyMiddleware = (logger) => {
+    return (createStore) => (reducer) => {
+        let store = createStore(reducer);
+        let dispatchFunc = logger(store); //返回是nextFunc，nextFunc = (next 或叫 dispatch) => action => {}
+        let dispatch = dispatchFunc(store.dispatch);
+
+        return {
+            ...store,dispatch //表示把新的dispatch，覆盖老的store的dispatch方法
+        }
+    }
+}*/
+
+/**
+ *
+ * @param logs 传入多个中间件
+ * @returns {function(*): function(*=): {dispatch: *}}
+ */
+
+
+let applyMiddleware = (...logs) => {
+    return (createStore) => (reducer) => {
+        let store = createStore(reducer);
+        logs.map(l=>l(store));
+
+        let dispatch = compose(...logs,store.dispatch);
+
+        return {
+            ...store,dispatch //表示把新的dispatch，覆盖老的store的dispatch方法
+        }
+    }
+}
+
+export {createStore,applyMiddleware}
